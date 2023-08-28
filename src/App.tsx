@@ -1,13 +1,10 @@
-import './App.css'
-import AuthenticationPage from "@/pages/AuthForm.tsx";
-// import Home from "@/Home.tsx";
+import router from '@/router'
+import { RouterProvider } from 'react-router-dom'
 
 function App() {
-
   return (
     <>
-      {/*<Home />*/}
-      <AuthenticationPage />
+      <RouterProvider router={router} />
     </>
   )
 }
