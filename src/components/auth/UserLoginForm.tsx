@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { cn } from '@/lib/utils.ts'
 import { Icons } from '@/components/icons.tsx'
@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label.tsx'
 import { ClearableInput } from '@/components/ui/input-with-clearable.tsx'
 import axios from 'axios'
 import '@/mocks/auth.ts'
+import { useNavigate } from 'react-router-dom'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -20,17 +21,48 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
   const [account, setAccount] = useState('')
   // 验证码相关
   const [showCodeInput, setShowCodeInput] = useState(false)
+  const [hasAccount, setHasAccount] = useState(false)
+
+  // 按钮文本
+  const [btnText, setBtnText] = useState('Continue with Email')
+  useEffect(() => {
+    if (showCodeInput) {
+      if (hasAccount) {
+        setBtnText('Login with Email')
+      } else {
+        setBtnText('Sign up with Email')
+      }
+    }
+  }, [showCodeInput, hasAccount]);
+  const navigate = useNavigate()
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
-    const response = await axios.get('/api/account/preauth')
-    console.log(response.data)
-    setTimeout(() => {
+    if (showCodeInput) {
+      // 登陆
+      if (hasAccount) {
+        const response = await axios.post('/api/user/login')
+        console.log(response.data)
+        localStorage.setItem('token', response.data.token)
+      } else {
+        // 注册
+        const response = await axios.post('/api/user/signup')
+        console.log(response.data)
+        localStorage.setItem('token', response.data.token)
+      }
+      navigate('/home')
+    } else {
+      setIsLoading(true)
+      const response = await axios.get('/api/user/preauth')
+      console.log(response.data)
+      setHasAccount(response.data.hasAccount)
       setIsLoading(false)
       setShowCodeInput(true)
-    }, 3000)
+    }
   }
+
+  useEffect(() => {})
 
   const clearInput = () => {
     setShowCodeInput(false)
@@ -77,7 +109,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            立 即 登 陆
+            {btnText}
           </Button>
         </div>
       </form>
