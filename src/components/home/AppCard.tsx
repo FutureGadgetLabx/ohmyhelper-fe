@@ -10,8 +10,10 @@ import {
 } from '@/components/ui/card'
 import { Icons } from '@/components/icons.tsx'
 import { AuthorHoverCard, AuthorProps } from '@/components/home/HoverCard.tsx'
+import { Link } from 'react-router-dom'
 
 interface AppCardProps {
+  id: number
   name: string
   description: string
   updateTime: number
@@ -26,9 +28,11 @@ export const AppCard = (props: AppCardProps) => {
     <Card>
       <CardHeader className="grid grid-cols-[1fr_80px] items-start gap-4 space-y-0">
         <div className="space-y-1">
-          <CardTitle className="hover:underline cursor-pointer">
-            {props.name}
-          </CardTitle>
+          <Link to={`${props.id}`}>
+            <CardTitle className="hover:underline cursor-pointer">
+              {props.name}
+            </CardTitle>
+          </Link>
           <CardDescription className="h-[60px] line-clamp-3">
             {props.description}
           </CardDescription>
