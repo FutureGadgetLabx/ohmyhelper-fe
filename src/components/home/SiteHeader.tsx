@@ -1,5 +1,7 @@
 import { MainNav } from '@/components/home/MainNav'
 import { UserNav } from '@/components/home/UserNav.tsx'
+import { BellIcon, StarIcon } from '@radix-ui/react-icons'
+import { Button } from '@/components/ui/button.tsx'
 
 export function SiteHeader() {
   return (
@@ -7,6 +9,17 @@ export function SiteHeader() {
       <div className="container flex h-14 items-center">
         <MainNav />
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+          <div className="mr-4">
+            <Button variant="ghost" className="rounded-full" size="icon">
+              <StarIcon className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" className="rounded-full" size="icon">
+              <span className="relative inline-block">
+                <BellIcon className="h-5 w-5" />
+                <span className="absolute right-0 top-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
+              </span>
+            </Button>
+          </div>
           <UserNav />
         </div>
       </div>

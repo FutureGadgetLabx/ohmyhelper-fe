@@ -33,7 +33,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
         setBtnText('Sign up with Email')
       }
     }
-  }, [showCodeInput, hasAccount]);
+  }, [showCodeInput, hasAccount])
   const navigate = useNavigate()
 
   async function onSubmit(event: React.SyntheticEvent) {

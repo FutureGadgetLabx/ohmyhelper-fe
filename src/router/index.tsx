@@ -1,13 +1,13 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import Login from '@/pages/Login'
 import SignUp from '@/pages/SignUp'
-import {Home} from "@/pages/Home.tsx";
+import { Home } from '@/pages/Home.tsx'
 
 const router = createBrowserRouter([
-  // {
-  //   path: '/',
-  //   element: <Home />,
-  // },
+  {
+    path: '/',
+    element: <Navigate to="/home" />,
+  },
   {
     path: '/login',
     element: <Login />,
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
   {
     path: '/home',
     element: <Home />,
-  }
+  },
 ])
 
 export default router
