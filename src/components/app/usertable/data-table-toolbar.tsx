@@ -31,7 +31,7 @@ export function DataTableToolbar<TData>({
         {table.getColumn('status') && (
           <DataTableFacetedFilter
             column={table.getColumn('status')}
-            title="Status"
+            title="任务状态"
             options={statuses}
           />
         )}

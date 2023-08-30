@@ -3,11 +3,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge.tsx'
 import { Checkbox } from '@/components/ui/checkbox.tsx'
 
-import { labels, priorities, statuses } from './data/data.tsx'
+import { labels, statuses } from './data/data.tsx'
 import { DataTableColumnHeader } from './data-table-column-header.tsx'
 
 import { taskSchema } from '@/components/app/usertable/data/schema.ts'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx'
+import { CalendarIcon } from '@radix-ui/react-icons'
+import dayjs from 'dayjs'
 
 export const columns: ColumnDef<taskSchema>[] = [
   {
@@ -34,7 +36,7 @@ export const columns: ColumnDef<taskSchema>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Task" />
+      <DataTableColumnHeader column={column} title="任务ID" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{row.getValue('id')}</div>,
     enableSorting: false,
@@ -79,7 +81,7 @@ export const columns: ColumnDef<taskSchema>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="任务状态" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
@@ -104,25 +106,17 @@ export const columns: ColumnDef<taskSchema>[] = [
     },
   },
   {
-    accessorKey: 'priority',
+    accessorKey: 'lastRunTime',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Priority" />
+      <DataTableColumnHeader column={column} title="上次运行时间" />
     ),
     cell: ({ row }) => {
-      const priority = priorities.find(
-        priority => priority.value === row.getValue('priority')
-      )
-
-      if (!priority) {
-        return null
-      }
-
       return (
         <div className="flex items-center">
-          {priority.icon && (
-            <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{priority.label}</span>
+          <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+          <span>
+            {dayjs(row.original.lastRunTime).format('YYYY-MM-DD HH:mm:ss')}
+          </span>
         </div>
       )
     },
@@ -131,3 +125,26 @@ export const columns: ColumnDef<taskSchema>[] = [
     },
   },
 ]
+
+export const getFullCol = (task: taskSchema): ColumnDef<taskSchema>[] => {
+  task.extendProps?.forEach((p, index) => {
+    columns.push({
+      accessorKey: p.header ?? 'Unknown',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={p.title ?? 'Unknown'} />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div id={index + ''} className="flex items-center">
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/*@ts-ignore*/}
+            {row.original.extendProps[index].value}
+          </div>
+        )
+      },
+      enableSorting: false,
+    })
+  })
+
+  return columns
+}

@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Home } from '@/pages/Home.tsx'
 import { AppGallery } from '@/components/home/AppGallery.tsx'
 import { AppDetail } from '@/components/app/AppDetail.tsx'
@@ -13,9 +8,10 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="apps" replace />} />
-          <Route path="apps" element={<Home />}>
+          <Route path="/" element={<Home />}>
             <Route index element={<AppGallery />} />
+          </Route>
+          <Route path="/apps" element={<Home />}>
             <Route path=":id" element={<AppDetail />} />
           </Route>
         </Routes>

@@ -19,7 +19,7 @@ export const MainNav = () => {
           to="/"
           className={cn(
             'transition-colors hover:text-foreground/80',
-            pathname === '/apps' ? 'text-foreground' : 'text-foreground/60'
+            pathname === '/' ? 'text-foreground' : 'text-foreground/60'
           )}
         >
           首页
@@ -28,7 +28,7 @@ export const MainNav = () => {
           to="/docs/components"
           className={cn(
             'transition-colors hover:text-foreground/80',
-            pathname?.startsWith('/docs/components')
+            pathname?.startsWith('/docs')
               ? 'text-foreground'
               : 'text-foreground/60'
           )}

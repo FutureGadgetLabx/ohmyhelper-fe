@@ -28,7 +28,7 @@ export const AppCard = (props: AppCardProps) => {
     <Card>
       <CardHeader className="grid grid-cols-[1fr_80px] items-start gap-4 space-y-0">
         <div className="space-y-1">
-          <Link to={`${props.id}`}>
+          <Link to={`/apps/${props.id}`}>
             <CardTitle className="hover:underline cursor-pointer">
               {props.name}
             </CardTitle>

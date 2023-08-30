@@ -1,7 +1,11 @@
-import { columns } from './columns.tsx'
+import { columns, getFullCol } from './columns.tsx'
 import { DataTable } from './data-table.tsx'
+import { taskSchema } from '@/components/app/usertable/data/schema.ts'
+import { useMemo } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
+import { DataTableColumnHeader } from '@/components/app/usertable/data-table-column-header.tsx'
 
-const tasks = [
+const tasks: taskSchema[] = [
   {
     id: 'TASK-8782',
     user: {
@@ -13,6 +17,19 @@ const tasks = [
     status: 'in progress',
     label: 'documentation',
     priority: 'medium',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '301',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-7878',
@@ -25,6 +42,19 @@ const tasks = [
     status: 'backlog',
     label: 'documentation',
     priority: 'medium',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '302',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-7839',
@@ -36,6 +66,19 @@ const tasks = [
     status: 'todo',
     label: 'bug',
     priority: 'high',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '303',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-5562',
@@ -48,6 +91,19 @@ const tasks = [
     status: 'backlog',
     label: 'feature',
     priority: 'medium',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '304',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-8686',
@@ -60,6 +116,19 @@ const tasks = [
     status: 'canceled',
     label: 'feature',
     priority: 'medium',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-1280',
@@ -72,6 +141,19 @@ const tasks = [
     status: 'done',
     label: 'bug',
     priority: 'high',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-7262',
@@ -84,6 +166,19 @@ const tasks = [
     status: 'done',
     label: 'feature',
     priority: 'high',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-1138',
@@ -96,6 +191,19 @@ const tasks = [
     status: 'in progress',
     label: 'feature',
     priority: 'medium',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-7184',
@@ -107,6 +215,19 @@ const tasks = [
     status: 'todo',
     label: 'feature',
     priority: 'low',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-5160',
@@ -119,6 +240,19 @@ const tasks = [
     status: 'in progress',
     label: 'documentation',
     priority: 'high',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-5618',
@@ -131,6 +265,19 @@ const tasks = [
     status: 'done',
     label: 'documentation',
     priority: 'medium',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-6699',
@@ -143,6 +290,19 @@ const tasks = [
     status: 'backlog',
     label: 'documentation',
     priority: 'medium',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-2858',
@@ -154,6 +314,19 @@ const tasks = [
     status: 'backlog',
     label: 'bug',
     priority: 'medium',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-9864',
@@ -166,6 +339,19 @@ const tasks = [
     status: 'done',
     label: 'bug',
     priority: 'high',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
   {
     id: 'TASK-8404',
@@ -177,9 +363,61 @@ const tasks = [
     status: 'in progress',
     label: 'bug',
     priority: 'low',
+    lastRunTime: new Date().getTime(),
+    extendProps: [
+      {
+        title: '硬币',
+        header: 'coins',
+        value: '300',
+      },
+      {
+        title: '当前经验',
+        header: 'currentExp',
+        value: '10000',
+      },
+    ],
   },
 ]
 export default function UserTable() {
+  const fcolumns = useMemo(() => {
+    // 基础字段
+    const baseColumns: ColumnDef<taskSchema>[] = [
+      {
+        id: 'id',
+        accessorKey: 'id',
+        header: '任务ID',
+      },
+      {
+        id: 'title',
+        accessorKey: 'title',
+        header: '任务标题',
+      },
+      {
+        id: 'user',
+        accessorKey: 'user',
+        header: '用户',
+      },
+      // 其他基础字段...
+    ]
+
+    // 动态生成的字段
+    const dynamicColumns =
+      tasks[0]?.extendProps?.map((prop, index) => {
+        const dynamicColumn: ColumnDef<taskSchema> = {
+          id: 'column-' + index,
+          accessorKey: prop.header,
+          header: prop.title,
+          cell: ({ row }) => (
+            <div>{row.original.extendProps?.[index]?.value ?? ''}</div>
+          ),
+        }
+
+        return dynamicColumn
+      }) ?? []
+
+    return [...baseColumns, ...dynamicColumns]
+  }, [tasks])
+
   return (
     <>
       <div className="hidden h-full flex-1 flex-col space-y-8 py-8 md:flex">
@@ -187,11 +425,11 @@ export default function UserTable() {
           <div>
             <h2 className="text-2xl font-bold tracking-tight">用户列表</h2>
             <p className="text-muted-foreground">
-              这是所有使用过该应用的用户以及他们的任务状态
+              这是所有使用过该应用的用户以及他们的执行状态
             </p>
           </div>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={tasks} columns={fcolumns} />
       </div>
     </>
   )
