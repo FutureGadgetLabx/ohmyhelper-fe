@@ -16,7 +16,7 @@ export const Home = () => {
               <AlertDescription>
                 本站正在努力建设中，还处于测试阶段，功能会陆续完善。如果您有任何的建议或反馈，请联系
                 <a
-                  className="font-medium underline"
+                  className="font-medium underline underline-offset-4"
                   href="mailto:cruii811@gmail.com"
                 >
                   cruii811@gmail.com
