@@ -45,7 +45,9 @@ export const HeadDetails = (props: HeadDetailsProps) => {
   const displayFormat = 'MM YYYY'
   return (
     <>
-      <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">App标题</h1>
+      <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+        哔哩哔哩日常任务
+      </h1>
       <blockquote className="mt-6 border-l-2 pl-6 italic">
         每日自动完成哔哩哔哩日常任务，如观看视频，分享视频，投币等。
       </blockquote>
@@ -99,7 +101,9 @@ export const HeadDetails = (props: HeadDetailsProps) => {
             <GitHubLogoIcon className="h-4 w-4 text-muted-foreground mx-1" />
             <span className="font-bold text-muted-foreground">开源地址</span>
           </div>
-          <span className="ml-1">-</span>
+          <span className="ml-1 underline cursor-pointer">
+            https://github.com/ohmyhelper/ohmyhelper-bilibili
+          </span>
         </div>
       </div>
       <div className="pt-4 flex gap-4">

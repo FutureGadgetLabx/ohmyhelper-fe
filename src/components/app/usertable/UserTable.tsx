@@ -10,7 +10,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'in progress',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -47,7 +47,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'backlog',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -69,7 +69,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'todo',
+    status: 'running',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -91,7 +91,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'backlog',
+    status: 'failed',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -113,7 +113,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'canceled',
+    status: 'running',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -135,7 +135,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'done',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -157,7 +157,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'done',
+    status: 'failed',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -179,7 +179,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'in progress',
+    status: 'running',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -201,7 +201,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'todo',
+    status: 'failed',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -223,7 +223,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'in progress',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -245,7 +245,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'done',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -267,7 +267,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'backlog',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -289,7 +289,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'backlog',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -311,7 +311,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'done',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {
@@ -333,7 +333,7 @@ const tasks: Task[] = [
       avatar: 'https://ui.shadcn.com/avatars/02.png',
       username: 'cruii',
     },
-    status: 'in progress',
+    status: 'complete',
     lastRunTime: new Date().getTime(),
     extendProps: [
       {

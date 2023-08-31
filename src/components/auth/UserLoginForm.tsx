@@ -51,7 +51,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
         console.log(response.data)
         localStorage.setItem('token', response.data.token)
       }
-      navigate('/home')
+      navigate('/')
     } else {
       setIsLoading(true)
       const response = await axios.get('/api/user/preauth')

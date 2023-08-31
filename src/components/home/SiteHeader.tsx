@@ -1,7 +1,7 @@
 import { MainNav } from '@/components/home/MainNav'
-import { UserNav } from '@/components/home/UserNav.tsx'
 import { BellIcon, StarIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button.tsx'
+import { Link } from 'react-router-dom'
 
 export function SiteHeader() {
   return (
@@ -20,7 +20,12 @@ export function SiteHeader() {
               </span>
             </Button>
           </div>
-          <UserNav />
+          <Link
+            to="/login"
+            className="flex font-bold items-center tracking-tight"
+          >
+            登录
+          </Link>
         </div>
       </div>
     </header>
