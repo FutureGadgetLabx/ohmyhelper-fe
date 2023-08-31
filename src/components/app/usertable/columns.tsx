@@ -1,44 +1,22 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ColumnDef } from '@tanstack/react-table'
 
-import { Badge } from '@/components/ui/badge.tsx'
-import { Checkbox } from '@/components/ui/checkbox.tsx'
-
-import { labels, statuses } from './data/data.tsx'
+import { statuses } from './data/data.tsx'
 import { DataTableColumnHeader } from './data-table-column-header.tsx'
 
-import { taskSchema } from '@/components/app/usertable/data/schema.ts'
+import { Task, User } from '@/components/app/usertable/data/schema.ts'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx'
-import { CalendarIcon } from '@radix-ui/react-icons'
+import { CalendarIcon, RocketIcon } from '@radix-ui/react-icons'
 import dayjs from 'dayjs'
+import { Badge } from '@/components/ui/badge.tsx'
 
-export const columns: ColumnDef<taskSchema>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={value => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="任务ID" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue('id')}</div>,
+    cell: ({ row }) => <div className="w-[100px]">{row.getValue('id')}</div>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -61,22 +39,36 @@ export const columns: ColumnDef<taskSchema>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'title',
+    accessorKey: 'extendProps',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Title" />
+      <DataTableColumnHeader column={column} title="详细信息" />
     ),
     cell: ({ row }) => {
-      const label = labels.find(label => label.value === row.original.label)
+      const extendProps = row.getValue('extendProps') as {
+        header: string
+        title: string
+        value: string
+      }[]
 
+      const user = row.getValue('user') as User
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue('title')}
+          <span className="flex gap-2">
+            {extendProps.map(v => {
+              return (
+                <span key={user.id + '-' + v.header}>
+                  <Badge variant="outline">
+                    <RocketIcon className="mr-1" />
+                    {v.title} : {v.value}
+                  </Badge>
+                </span>
+              )
+            })}
           </span>
         </div>
       )
     },
+    enableSorting: false,
   },
   {
     accessorKey: 'status',
@@ -115,36 +107,10 @@ export const columns: ColumnDef<taskSchema>[] = [
         <div className="flex items-center">
           <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
           <span>
-            {dayjs(row.original.lastRunTime).format('YYYY-MM-DD HH:mm:ss')}
+            {dayjs(row.getValue('lastRunTime')).format('YYYY-MM-DD HH:mm:ss')}
           </span>
         </div>
       )
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
   },
 ]
-
-export const getFullCol = (task: taskSchema): ColumnDef<taskSchema>[] => {
-  task.extendProps?.forEach((p, index) => {
-    columns.push({
-      accessorKey: p.header ?? 'Unknown',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={p.title ?? 'Unknown'} />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div id={index + ''} className="flex items-center">
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/*@ts-ignore*/}
-            {row.original.extendProps[index].value}
-          </div>
-        )
-      },
-      enableSorting: false,
-    })
-  })
-
-  return columns
-}

@@ -1,21 +1,17 @@
-interface User {
+export type User = {
+  id: string
   avatar: string
   username: string
 }
 
-interface Task {
+export type Task = {
   id: string
   user: User
-  title: string
   status: string
-  label: string
-  priority: string
   lastRunTime: number
-  extendProps?: {
+  extendProps: {
     header: string
     title: string
     value: string
   }[]
 }
-
-export type taskSchema = Task
