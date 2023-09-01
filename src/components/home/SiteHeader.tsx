@@ -1,5 +1,5 @@
 import { MainNav } from '@/components/home/MainNav'
-import { BellIcon, StarIcon } from '@radix-ui/react-icons'
+import { ArrowRightIcon, BellIcon, StarIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button.tsx'
 import { Link } from 'react-router-dom'
 
@@ -22,9 +22,10 @@ export function SiteHeader() {
           </div>
           <Link
             to="/login"
-            className="flex font-bold items-center tracking-tight"
+            className="flex font-medium items-center tracking-tight"
           >
             登录
+            <ArrowRightIcon className="font-bold" />
           </Link>
         </div>
       </div>
