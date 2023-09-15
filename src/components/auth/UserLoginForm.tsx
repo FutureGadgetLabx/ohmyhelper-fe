@@ -7,11 +7,72 @@ import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
 import { Label } from '@/components/ui/label.tsx'
 import { ClearableInput } from '@/components/ui/input-with-clearable.tsx'
-import axios from 'axios'
 import '@/mocks/auth.ts'
 import { useNavigate } from 'react-router-dom'
+import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types'
+import axios from 'axios'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const opt: PublicKeyCredentialCreationOptionsJSON = {
+  rp: {
+    name: 'Go Webauthn',
+    id: 'localhost',
+  },
+  user: {
+    name: 'user cruii',
+    displayName: 'User Cruii',
+    id: 'Y3J1aWk',
+  },
+  challenge: 'HtEbVI-SsPRzxF5b1co6ku7TLXE369R8KwcP5_51nyI',
+  pubKeyCredParams: [
+    {
+      type: 'public-key',
+      alg: -7,
+    },
+    {
+      type: 'public-key',
+      alg: -35,
+    },
+    {
+      type: 'public-key',
+      alg: -36,
+    },
+    {
+      type: 'public-key',
+      alg: -257,
+    },
+    {
+      type: 'public-key',
+      alg: -258,
+    },
+    {
+      type: 'public-key',
+      alg: -259,
+    },
+    {
+      type: 'public-key',
+      alg: -37,
+    },
+    {
+      type: 'public-key',
+      alg: -38,
+    },
+    {
+      type: 'public-key',
+      alg: -39,
+    },
+    {
+      type: 'public-key',
+      alg: -8,
+    },
+  ],
+  timeout: 300000,
+  authenticatorSelection: {
+    requireResidentKey: false,
+    userVerification: 'preferred',
+  },
+}
 
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
   const inputRef = React.useRef(null)
@@ -38,28 +99,50 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
-    setIsLoading(true)
-    if (showCodeInput) {
-      // 登陆
-      if (hasAccount) {
-        const response = await axios.post('/api/user/login')
-        console.log(response.data)
-        localStorage.setItem('token', response.data.token)
-      } else {
-        // 注册
-        const response = await axios.post('/api/user/signup')
-        console.log(response.data)
-        localStorage.setItem('token', response.data.token)
-      }
-      navigate('/')
-    } else {
-      setIsLoading(true)
-      const response = await axios.get('/api/user/preauth')
-      console.log(response.data)
-      setHasAccount(response.data.hasAccount)
-      setIsLoading(false)
-      setShowCodeInput(true)
-    }
+    // const response = await axios.get(
+    //   'http://localhost:8088/webauthn/registration/options'
+    // )
+    // const attResp = await startRegistration(response.data.publicKey)
+    // const verificationResp = await axios.post(
+    //   'http://localhost:8088/webauthn/registration/verify',
+    //   attResp,
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
+    // )
+    //
+    // console.log(verificationResp)
+
+    // --------login---------
+    const response = await axios.get(
+      'http://localhost:8088/webauthn/auth/options'
+    )
+    console.log(response.data)
+    // ----
+    // setIsLoading(true)
+    // if (showCodeInput) {
+    //   // 登陆
+    //   if (hasAccount) {
+    //     const response = await axios.post('/api/user/login')
+    //     console.log(response.data)
+    //     localStorage.setItem('token', response.data.token)
+    //   } else {
+    //     // 注册
+    //     const response = await axios.post('/api/user/signup')
+    //     console.log(response.data)
+    //     localStorage.setItem('token', response.data.token)
+    //   }
+    //   navigate('/')
+    // } else {
+    //   setIsLoading(true)
+    //   const response = await axios.get('/api/user/preauth')
+    //   console.log(response.data)
+    //   setHasAccount(response.data.hasAccount)
+    //   setIsLoading(false)
+    //   setShowCodeInput(true)
+    // }
   }
 
   useEffect(() => {})
