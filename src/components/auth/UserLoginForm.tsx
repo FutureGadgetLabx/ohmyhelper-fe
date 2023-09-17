@@ -11,6 +11,7 @@ import '@/mocks/auth.ts'
 import { useNavigate } from 'react-router-dom'
 import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types'
 import axios from 'axios'
+import { startAuthentication, startRegistration } from '@simplewebauthn/browser'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -99,27 +100,33 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
-    // const response = await axios.get(
-    //   'http://localhost:8088/webauthn/registration/options'
-    // )
-    // const attResp = await startRegistration(response.data.publicKey)
-    // const verificationResp = await axios.post(
-    //   'http://localhost:8088/webauthn/registration/verify',
-    //   attResp,
-    //   {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   }
-    // )
-    //
-    // console.log(verificationResp)
+    const response = await axios.get(
+      `http://localhost:8888/webauthn/reg/options?email=${account}`
+    )
+    const attResp = await startRegistration(response.data)
+    const verificationResp = await axios.post(
+      'http://localhost:8088/webauthn/registration/verify',
+      attResp,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+
+    console.log(verificationResp)
 
     // --------login---------
-    const response = await axios.get(
-      'http://localhost:8088/webauthn/auth/options'
-    )
-    console.log(response.data)
+    // const response = await axios.get(
+    //   'http://localhost:8088/webauthn/auth/options'
+    // )
+    // console.log(response.data)
+    // const responseJSON = await startAuthentication(response.data.publicKey)
+    // const resp = await axios.post(
+    //   'http://localhost:8088/webauthn/auth/',
+    //   responseJSON
+    // )
+    // console.log(resp.data)
     // ----
     // setIsLoading(true)
     // if (showCodeInput) {
@@ -157,11 +164,11 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="account">
+            <Label className="sr-only" htmlFor="username">
               Email
             </Label>
             <ClearableInput
-              id="account"
+              id="username"
               placeholder="您的电子邮箱"
               value={account}
               onChange={e => {
@@ -171,7 +178,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
               handleClear={clearInput}
               type="text"
               autoCapitalize="none"
-              autoComplete="account"
+              autoComplete="username webauthn"
               autoCorrect="off"
               disabled={isLoading}
               ref={inputRef}
