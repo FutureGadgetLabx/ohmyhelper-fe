@@ -1,10 +1,22 @@
 import { Link } from 'react-router-dom'
 import { UserLoginForm } from '@/components/auth/UserLoginForm.tsx'
+import { buttonVariants } from '@/components/ui/button.tsx'
+import { cn } from '@/lib/utils.ts'
 
 export default function Login() {
   return (
     <>
       <div className="relative hidden h-full w-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+        <Link
+          to="/signup"
+          className={cn(
+            buttonVariants({ variant: 'ghost' }),
+            'absolute right-4 top-4 md:right-8 md:top-8'
+          )}
+        >
+          没有账号？立即注册
+        </Link>
+
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center text-lg font-medium">
@@ -25,11 +37,9 @@ export default function Login() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                &ldquo;This library has saved me countless hours of work and
-                helped me deliver stunning designs to my clients faster than
-                ever before.&rdquo;
+                &ldquo;统一管理，定时任务无忧。欢迎来到我们的集中式定时任务平台，我们为您提供一站式的任务管理工具，让您能够轻松集中管理和安排各类定时任务。&rdquo;
               </p>
-              <footer className="text-sm">Sofia Davis</footer>
+              <footer className="text-sm">Cruii</footer>
             </blockquote>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { Icons } from '@/components/icons.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
 import { Label } from '@/components/ui/label.tsx'
+import { Link } from 'react-router-dom'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -57,7 +58,7 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
-              placeholder="您的电子邮箱"
+              placeholder="电子邮箱"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
@@ -66,13 +67,13 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
             />
           </div>
           <div className="flex gap-1">
-            <Label className="sr-only" htmlFor="phone">
-              Phone
+            <Label className="sr-only" htmlFor="code">
+              验证码
             </Label>
             <Input
               className="w-4/5"
-              id="phone"
-              placeholder="您的手机号码"
+              id="code"
+              placeholder="邮箱验证码"
               type="text"
               autoCapitalize="none"
               autoComplete="phone"
@@ -92,17 +93,6 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
               )}{' '}
               {codeBtnText}
             </Button>
-          </div>
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="smscode">
-              验证码
-            </Label>
-            <Input
-              id="smscode"
-              placeholder="短信验证码"
-              type="text"
-              disabled={isLoading}
-            />
           </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="password">
@@ -126,46 +116,16 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
             )}
             立 即 注 册
           </Button>
+          <div className="flex justify-end">
+            <Link
+              to="/login"
+              className="text-sm  text-muted-foreground underline underline-offset-4"
+            >
+              返回登录
+            </Link>
+          </div>
         </div>
       </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
-      <div className="flex justify-center gap-2">
-        <Button
-          className="w-32"
-          variant="outline"
-          type="button"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-          )}{' '}
-          Github
-        </Button>
-        <Button
-          className="w-32"
-          variant="outline"
-          type="button"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Icons.qq className="mr-2 h-5 w-5" />
-          )}{' '}
-          QQ
-        </Button>
-      </div>
     </div>
   )
 }

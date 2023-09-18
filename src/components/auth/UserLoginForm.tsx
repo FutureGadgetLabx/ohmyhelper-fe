@@ -1,163 +1,31 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { cn } from '@/lib/utils.ts'
 import { Icons } from '@/components/icons.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
 import { Label } from '@/components/ui/label.tsx'
-import { ClearableInput } from '@/components/ui/input-with-clearable.tsx'
 import '@/mocks/auth.ts'
 import { useNavigate } from 'react-router-dom'
-import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types'
-import { startRegistration } from '@simplewebauthn/browser'
-import axios from '@/request/base'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const opt: PublicKeyCredentialCreationOptionsJSON = {
-  rp: {
-    name: 'Go Webauthn',
-    id: 'localhost',
-  },
-  user: {
-    name: 'user cruii',
-    displayName: 'User Cruii',
-    id: 'Y3J1aWk',
-  },
-  challenge: 'HtEbVI-SsPRzxF5b1co6ku7TLXE369R8KwcP5_51nyI',
-  pubKeyCredParams: [
-    {
-      type: 'public-key',
-      alg: -7,
-    },
-    {
-      type: 'public-key',
-      alg: -35,
-    },
-    {
-      type: 'public-key',
-      alg: -36,
-    },
-    {
-      type: 'public-key',
-      alg: -257,
-    },
-    {
-      type: 'public-key',
-      alg: -258,
-    },
-    {
-      type: 'public-key',
-      alg: -259,
-    },
-    {
-      type: 'public-key',
-      alg: -37,
-    },
-    {
-      type: 'public-key',
-      alg: -38,
-    },
-    {
-      type: 'public-key',
-      alg: -39,
-    },
-    {
-      type: 'public-key',
-      alg: -8,
-    },
-  ],
-  timeout: 300000,
-  authenticatorSelection: {
-    requireResidentKey: false,
-    userVerification: 'preferred',
-  },
-}
-
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
-  const inputRef = React.useRef(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const [account, setAccount] = useState('')
-  // 验证码相关
-  const [showCodeInput, setShowCodeInput] = useState(false)
-  const [hasAccount, setHasAccount] = useState(false)
-
-  // 按钮文本
-  const [btnText, setBtnText] = useState('Continue with Email')
-  useEffect(() => {
-    if (showCodeInput) {
-      if (hasAccount) {
-        setBtnText('Login with Email')
-      } else {
-        setBtnText('Sign up with Email')
-      }
-    }
-  }, [showCodeInput, hasAccount])
+  const [email, setEmail] = useState('')
+  const [passwd, setPasswd] = useState('')
   const navigate = useNavigate()
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
-    const response = await axios.get(`/webauthn/reg/options?email=${account}`)
-    const data = response.data
-    const attResp = await startRegistration(data.options)
-    const verificationResp = await axios.post(
-      `/webauthn/reg/verify?email=${data.email}`,
-      {
-        attr: attResp,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-
-    console.log(verificationResp)
-
-    // --------login---------
-    // const response = await axios.get(
-    //   'http://localhost:8088/webauthn/auth/options'
-    // )
-    // console.log(response.data)
-    // const responseJSON = await startAuthentication(response.data.publicKey)
-    // const resp = await axios.post(
-    //   'http://localhost:8088/webauthn/auth/',
-    //   responseJSON
-    // )
-    // console.log(resp.data)
-    // ----
-    // setIsLoading(true)
-    // if (showCodeInput) {
-    //   // 登陆
-    //   if (hasAccount) {
-    //     const response = await axios.post('/api/user/login')
-    //     console.log(response.data)
-    //     localStorage.setItem('token', response.data.token)
-    //   } else {
-    //     // 注册
-    //     const response = await axios.post('/api/user/signup')
-    //     console.log(response.data)
-    //     localStorage.setItem('token', response.data.token)
-    //   }
-    //   navigate('/')
-    // } else {
-    //   setIsLoading(true)
-    //   const response = await axios.get('/api/user/preauth')
-    //   console.log(response.data)
-    //   setHasAccount(response.data.hasAccount)
-    //   setIsLoading(false)
-    //   setShowCodeInput(true)
-    // }
-  }
-
-  useEffect(() => {})
-
-  const clearInput = () => {
-    setShowCodeInput(false)
-    setAccount('')
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
   }
 
   return (
@@ -165,42 +33,54 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="username">
+            <Label className="sr-only" htmlFor="email">
               Email
             </Label>
-            <ClearableInput
-              id="username"
-              placeholder="您的电子邮箱"
-              value={account}
+            <Input
+              className={cn(
+                'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+                className
+              )}
+              id="email"
+              placeholder="电子邮箱"
+              value={email}
               onChange={e => {
-                setShowCodeInput(false)
-                setAccount(e.target.value)
+                setEmail(e.target.value)
               }}
-              handleClear={clearInput}
               type="text"
               autoCapitalize="none"
-              autoComplete="username webauthn"
+              autoComplete="email"
               autoCorrect="off"
+              required={true}
               disabled={isLoading}
               ref={inputRef}
             />
           </div>
-          {showCodeInput && (
-            <div className="grid gap-1">
-              <p className="text-sm text-muted-foreground">
-                我们刚刚向您发送了验证码，请检查您的收件箱并粘贴到下面的文本框中。
-              </p>
-              <Label className="sr-only" htmlFor="code">
-                验证码
-              </Label>
-              <Input id="code" placeholder="邮箱验证码" type="text" />
-            </div>
-          )}
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="passwd">
+              Email
+            </Label>
+            <Input
+              className={cn(
+                'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+                className
+              )}
+              id="passwd"
+              placeholder="密码"
+              value={passwd}
+              onChange={e => setPasswd(e.target.value)}
+              type="password"
+              autoCapitalize="none"
+              autoCorrect="off"
+              required={true}
+              disabled={isLoading}
+            />
+          </div>
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            {btnText}
+            立即登录
           </Button>
         </div>
       </form>
@@ -221,12 +101,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
           type="button"
           disabled={isLoading}
         >
-          {isLoading ? (
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-          )}{' '}
-          Github
+          {<Icons.gitHub className="mr-2 h-4 w-4" />} Github
         </Button>
         <Button
           className="w-32"
@@ -234,12 +109,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
           type="button"
           disabled={isLoading}
         >
-          {isLoading ? (
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Icons.qq className="mr-2 h-5 w-5" />
-          )}{' '}
-          QQ
+          {<Icons.qq className="mr-2 h-5 w-5" />} QQ
         </Button>
       </div>
     </div>

@@ -29,7 +29,7 @@ const ClearableInput = React.forwardRef<HTMLInputElement, InputProps>(
               onClick={handleClear}
               className="text-gray-600 hover:text-gray-700"
             >
-              <span className="sr-only">Search</span>
+              <span className="sr-only">Close</span>
               <svg
                 role="graphics-symbol"
                 viewBox="0 0 16 16"
