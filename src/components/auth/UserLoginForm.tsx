@@ -10,8 +10,8 @@ import { ClearableInput } from '@/components/ui/input-with-clearable.tsx'
 import '@/mocks/auth.ts'
 import { useNavigate } from 'react-router-dom'
 import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types'
-import axios from 'axios'
-import { startAuthentication, startRegistration } from '@simplewebauthn/browser'
+import { startRegistration } from '@simplewebauthn/browser'
+import axios from '@/request/base'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -100,13 +100,14 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
-    const response = await axios.get(
-      `http://localhost:8888/webauthn/reg/options?email=${account}`
-    )
-    const attResp = await startRegistration(response.data)
+    const response = await axios.get(`/webauthn/reg/options?email=${account}`)
+    const data = response.data
+    const attResp = await startRegistration(data.options)
     const verificationResp = await axios.post(
-      'http://localhost:8088/webauthn/registration/verify',
-      attResp,
+      `/webauthn/reg/verify?email=${data.email}`,
+      {
+        attr: attResp,
+      },
       {
         headers: {
           'Content-Type': 'application/json',
