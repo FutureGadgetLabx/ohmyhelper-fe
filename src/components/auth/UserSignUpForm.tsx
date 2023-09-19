@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils.ts'
 import { Icons } from '@/components/icons.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
-import { Label } from '@/components/ui/label.tsx'
 import { Link } from 'react-router-dom'
 import { useToast } from '@/components/ui/use-toast.ts'
 import { sendCode } from '@/request/Auth.ts'
@@ -26,6 +25,14 @@ const signUpFormSchema = z.object({
   code: z
     .string({ required_error: '请填写验证码' })
     .length(6, { message: '验证码不合法' }),
+  passwd: z
+    .string({ required_error: '请输入密码' })
+    .min(6, { message: '密码不少于6位' })
+    .max(16, { message: '密码不多于16位' }),
+  repasswd: z
+    .string({ required_error: '请输入密码' })
+    .min(6, { message: '密码不少于6位' })
+    .max(16, { message: '密码不多于16位' }),
 })
 
 type SignUpFormValues = z.infer<typeof signUpFormSchema>
@@ -36,6 +43,8 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
   const values: SignUpFormValues = {
     email: '',
     code: '',
+    passwd: '',
+    repasswd: '',
   }
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpFormSchema),
@@ -52,7 +61,11 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
   const [codeBtnDisabled, setCodeBtnDisabled] = useState(false)
   const [codeBtnLoading, setCodeBtnLoading] = useState(false)
 
-  function onSubmit(data: SignUpFormValues) {
+  async function onSubmit(data: SignUpFormValues) {
+    if (data.passwd !== data.repasswd) {
+      form.setError('repasswd', { message: '输入的密码不一致' })
+      return
+    }
     toast({
       title: 'Uh oh! Something went wrong.',
       description: (
@@ -75,25 +88,22 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
       form.setError('email', { message: 'Email格式不合法' })
       return
     }
+    setCodeBtnLoading(true)
+    setCodeBtnDisabled(true)
     const resp = await sendCode({
       email: form.getValues().email,
       action: 'register',
     })
     if (resp.status === 200) {
+      countDown()
+      // 处理成功的响应
       toast({
-        title: 'Uh oh! Something went wrong.',
+        title: '验证码发送成功',
         description: 'There was a problem with your request.',
       })
-    } else {
-      toast({
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
-      })
-      return
     }
-    setCodeBtnLoading(true)
-    setCodeBtnDisabled(true)
-    countDown()
+    setCodeBtnLoading(false)
+    setCodeBtnDisabled(false)
   }
 
   const countDown = () => {
@@ -173,19 +183,41 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
               </Button>
             </div>
             <div className="grid gap-1">
-              <Label className="sr-only" htmlFor="password">
-                Password
-              </Label>
-              <Input id="password" placeholder="您的密码" type="password" />
+              <FormField
+                control={form.control}
+                name="passwd"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        id="passwd"
+                        placeholder="您的密码"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="grid gap-1">
-              <Label className="sr-only" htmlFor="confirmPassword">
-                Password
-              </Label>
-              <Input
-                id="confirmPassword"
-                placeholder="确认您的密码"
-                type="password"
+              <FormField
+                control={form.control}
+                name="repasswd"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        id="repasswd"
+                        placeholder="您的密码"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
             <Button type="submit" disabled={isLoading}>

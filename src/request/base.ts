@@ -1,8 +1,8 @@
 import axios from 'axios'
+import { toast } from '@/components/ui/use-toast.ts'
 
 // 根据开发环境和线上环境返回不同的 baseURL
 export function getBaseURL(): string {
-  console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'development') {
     return 'http://localhost:8888/'
   } else {
@@ -15,4 +15,14 @@ axios.interceptors.request.use(config => {
   return config
 })
 
-export default axios
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    toast({
+      variant: 'destructive',
+      title: '请求出错',
+      description: error.response.data,
+    })
+    return Promise.resolve('Error handled')
+  }
+)
