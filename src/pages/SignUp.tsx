@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { UserSignUpForm } from '@/components/auth/UserSignUpForm.tsx'
 
-export default function SignUp() {
+export const SignUp = () => {
   return (
     <>
       <div className="lg:p-8 w-full h-full place-content-center">

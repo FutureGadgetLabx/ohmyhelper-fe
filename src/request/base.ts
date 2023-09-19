@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 // 根据开发环境和线上环境返回不同的 baseURL
-function getBaseURL(): string {
+export function getBaseURL(): string {
+  console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'development') {
     return 'http://localhost:8888/'
   } else {

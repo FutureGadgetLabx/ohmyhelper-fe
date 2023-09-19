@@ -3,7 +3,8 @@ import { Home } from '@/pages/Home.tsx'
 import { AppGallery } from '@/components/home/AppGallery.tsx'
 import { AppDetail } from '@/components/app/AppDetail.tsx'
 import Login from '@/pages/Login.tsx'
-import SignUp from '@/pages/SignUp.tsx'
+import { SignUp } from '@/pages/SignUp.tsx'
+import { Toaster } from '@/components/ui/toaster.tsx'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      <Toaster />
     </>
   )
 }
