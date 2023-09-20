@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
 import { Link } from 'react-router-dom'
 import { useToast } from '@/components/ui/use-toast.ts'
-import { sendCode } from '@/request/Auth.ts'
+import { register, sendCode } from '@/request/Auth.ts'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -66,19 +66,19 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
       form.setError('repasswd', { message: '输入的密码不一致' })
       return
     }
-    toast({
-      title: 'Uh oh! Something went wrong.',
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
     setIsLoading(true)
-
-    setTimeout(() => {
+    try {
+      const response = await register(data)
+      console.log(response.data)
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: '注册账号失败',
+        description: error.response ? error.response.data : error.message,
+      })
+    } finally {
       setIsLoading(false)
-    }, 3000)
+    }
   }
 
   const handleSendCode = async (e: React.SyntheticEvent) => {
@@ -90,20 +90,25 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
     }
     setCodeBtnLoading(true)
     setCodeBtnDisabled(true)
-    const resp = await sendCode({
-      email: form.getValues().email,
-      action: 'register',
-    })
-    if (resp.status === 200) {
+
+    try {
+      await sendCode({
+        email: form.getValues().email,
+        action: 'register',
+      })
+
       countDown()
-      // 处理成功的响应
+    } catch (error) {
+      setCodeBtnLoading(false)
+      setCodeBtnDisabled(false)
+      setCodeBtnText('发送验证码')
+
       toast({
-        title: '验证码发送成功',
-        description: 'There was a problem with your request.',
+        variant: 'destructive',
+        title: '验证码发送失败',
+        description: error.response ? error.response.data : error.message,
       })
     }
-    setCodeBtnLoading(false)
-    setCodeBtnDisabled(false)
   }
 
   const countDown = () => {
@@ -210,7 +215,7 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
                     <FormControl>
                       <Input
                         id="repasswd"
-                        placeholder="您的密码"
+                        placeholder="确认您的密码"
                         type="password"
                         {...field}
                       />
