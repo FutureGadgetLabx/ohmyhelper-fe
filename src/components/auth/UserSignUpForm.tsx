@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils.ts'
 import { Icons } from '@/components/icons.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useToast } from '@/components/ui/use-toast.ts'
 import { register, sendCode } from '@/request/Auth.ts'
 import * as z from 'zod'
@@ -61,6 +61,8 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
   const [codeBtnDisabled, setCodeBtnDisabled] = useState(false)
   const [codeBtnLoading, setCodeBtnLoading] = useState(false)
 
+  const navigate = useNavigate()
+
   async function onSubmit(data: SignUpFormValues) {
     if (data.passwd !== data.repasswd) {
       form.setError('repasswd', { message: '输入的密码不一致' })
@@ -68,13 +70,20 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
     }
     setIsLoading(true)
     try {
-      const response = await register(data)
-      console.log(response.data)
+      await register(data)
+      toast({
+        title: '注册账号成功',
+      })
+      setTimeout(() => {
+        navigate('/login')
+      }, 1000)
     } catch (error) {
       toast({
         variant: 'destructive',
         title: '注册账号失败',
-        description: error.response ? error.response.data : error.message,
+        description: error.response
+          ? error.response.data.message
+          : error.message,
       })
     } finally {
       setIsLoading(false)
