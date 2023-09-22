@@ -4,8 +4,7 @@ export interface LoginReq {
 }
 
 export interface LoginResp {
-  token: string
-  refreshToken: string
+  userID?: string
 }
 
 export interface RegisterReq {

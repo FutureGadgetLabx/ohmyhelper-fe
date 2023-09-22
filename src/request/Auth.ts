@@ -1,4 +1,6 @@
 import {
+  LoginReq,
+  LoginResp,
   RegisterReq,
   RegisterResp,
   SendCodeReq,
@@ -15,5 +17,10 @@ export const sendCode = (req: SendCodeReq) =>
 
 export const register = (req: RegisterReq) =>
   axios.post<RegisterReq, AxiosResponse<RegisterResp>>('/auth/register', req, {
+    baseURL: baseURL,
+  })
+
+export const login = (req: LoginReq) =>
+  axios.post<LoginReq, AxiosResponse<LoginResp>>('/auth/login', req, {
     baseURL: baseURL,
   })

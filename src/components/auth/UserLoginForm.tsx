@@ -5,23 +5,47 @@ import { cn } from '@/lib/utils.ts'
 import { Icons } from '@/components/icons.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
-import { Label } from '@/components/ui/label.tsx'
-import '@/mocks/auth.ts'
-import { useNavigate } from 'react-router-dom'
+import * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form.tsx'
+
+const loginFormSchema = z.object({
+  email: z
+    .string()
+    .min(1, '请输入您的Email')
+    .email({ message: 'Email格式不合法' }),
+  passwd: z
+    .string({ required_error: '请输入您的密码' })
+    .min(6, { message: '密码不少于6位' })
+    .max(16, { message: '密码不高于16位' }),
+})
+
+type LoginFormValues = z.infer<typeof loginFormSchema>
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
-  const inputRef = React.useRef<HTMLInputElement>(null)
+  const defaultValues: LoginFormValues = {
+    email: '',
+    passwd: '',
+  }
+
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: defaultValues,
+  })
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const [email, setEmail] = useState('')
-  const [passwd, setPasswd] = useState('')
-  const navigate = useNavigate()
-
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
+  async function onSubmit(data: LoginFormValues) {
+    console.log(data)
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
@@ -30,60 +54,71 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
-      <form onSubmit={onSubmit}>
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              className={cn(
-                'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
-                className
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid gap-2">
+            <div className="grid gap-1">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+                          className
+                        )}
+                        id="email"
+                        placeholder="电子邮箱"
+                        type="text"
+                        autoCapitalize="none"
+                        autoComplete="email"
+                        autoCorrect="off"
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid gap-1">
+              <FormField
+                control={form.control}
+                name="passwd"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+                          className
+                        )}
+                        id="passwd"
+                        placeholder="密码"
+                        type="password"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button disabled={isLoading}>
+              {isLoading && (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              id="email"
-              placeholder="电子邮箱"
-              value={email}
-              onChange={e => {
-                setEmail(e.target.value)
-              }}
-              type="text"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              required={true}
-              disabled={isLoading}
-              ref={inputRef}
-            />
+              立即登录
+            </Button>
           </div>
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="passwd">
-              Email
-            </Label>
-            <Input
-              className={cn(
-                'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
-                className
-              )}
-              id="passwd"
-              placeholder="密码"
-              value={passwd}
-              onChange={e => setPasswd(e.target.value)}
-              type="password"
-              autoCapitalize="none"
-              autoCorrect="off"
-              required={true}
-              disabled={isLoading}
-            />
-          </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            立即登录
-          </Button>
-        </div>
-      </form>
+        </form>
+      </Form>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />

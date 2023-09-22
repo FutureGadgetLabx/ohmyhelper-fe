@@ -18,9 +18,9 @@ import {
   FormMessage,
 } from '@/components/ui/form.tsx'
 
-const signUpFormSchema = z.object({
+const signupFormSchema = z.object({
   email: z
-    .string({ required_error: '请填写Email地址' })
+    .string({ required_error: '请输入您的Email' })
     .email({ message: 'Email格式不合法' }),
   code: z
     .string({ required_error: '请填写验证码' })
@@ -32,23 +32,23 @@ const signUpFormSchema = z.object({
   repasswd: z
     .string({ required_error: '请输入密码' })
     .min(6, { message: '密码不少于6位' })
-    .max(16, { message: '密码不多于16位' }),
+    .max(16, { message: '密码不高于16位' }),
 })
 
-type SignUpFormValues = z.infer<typeof signUpFormSchema>
+type SignUpFormValues = z.infer<typeof signupFormSchema>
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
-  const values: SignUpFormValues = {
+  const defaultValues: SignUpFormValues = {
     email: '',
     code: '',
     passwd: '',
     repasswd: '',
   }
   const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(signUpFormSchema),
-    defaultValues: values,
+    resolver: zodResolver(signupFormSchema),
+    defaultValues: defaultValues,
   })
 
   // 弹窗
@@ -205,7 +205,7 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
                     <FormControl>
                       <Input
                         id="passwd"
-                        placeholder="您的密码"
+                        placeholder="密码"
                         type="password"
                         {...field}
                       />
@@ -224,7 +224,7 @@ export function UserSignUpForm({ className, ...props }: UserAuthFormProps) {
                     <FormControl>
                       <Input
                         id="repasswd"
-                        placeholder="确认您的密码"
+                        placeholder="确认密码"
                         type="password"
                         {...field}
                       />
