@@ -11,7 +11,7 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(
-  response => response,
+  response => response.data,
   error => {
     const resp = error.response
     if (resp && resp.status === 401) {

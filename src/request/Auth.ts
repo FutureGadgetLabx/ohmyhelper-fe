@@ -7,7 +7,7 @@ import {
   SendCodeResp,
 } from '@/request/model/Auth.ts'
 import axios, { AxiosResponse } from 'axios'
-import { getBaseURL } from '@/request/base.ts'
+import { getBaseURL } from '@/request/Base.ts'
 
 const baseURL = getBaseURL()
 export const sendCode = (req: SendCodeReq) =>
