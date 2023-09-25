@@ -59,9 +59,9 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       const resp = await login({ email: data.email, passwd: data.passwd })
       const userResp = await getUser({ userID: resp.data.userID })
       appStore.setUser({ ...userResp.data })
+      localStorage.setItem('user', JSON.stringify(userResp.data))
       navigate('/')
     } catch (error) {
-      console.log(error)
       toast({
         variant: 'destructive',
         title: '登录失败',
