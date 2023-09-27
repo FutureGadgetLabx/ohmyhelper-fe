@@ -3,7 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx'
 import { RocketIcon } from '@radix-ui/react-icons'
 import { Outlet } from 'react-router-dom'
 import { useEffect } from 'react'
-import { getUser } from '@/request/User.ts'
+import { getUser } from '@/requests/user.ts'
 import useStores from '@/store/UseStore.ts'
 
 export const Home = () => {

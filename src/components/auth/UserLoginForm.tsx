@@ -15,11 +15,12 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form.tsx'
-import { login } from '@/request/Auth.ts'
+import { login } from '@/requests/auth.ts'
 import { toast } from '@/components/ui/use-toast.ts'
-import { getUser } from '@/request/User.ts'
+import { getUser } from '@/requests/user.ts'
 import { useNavigate } from 'react-router-dom'
-import useStore from '@/store/UseStore.ts'
+import { useSetRecoilState } from 'recoil'
+import { userState } from '@/recoil/atom.ts'
 
 const loginFormSchema = z.object({
   email: z
@@ -48,18 +49,16 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
   })
 
   const [isLoading, setIsLoading] = useState(false)
-
+  const setUser = useSetRecoilState(userState)
   const navigate = useNavigate()
-
-  const { appStore } = useStore()
 
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true)
     try {
       const resp = await login({ email: data.email, passwd: data.passwd })
       const userResp = await getUser({ userID: resp.data.userID })
-      appStore.setUser({ ...userResp.data })
-      localStorage.setItem('user', JSON.stringify(userResp.data))
+      setUser({ ...userResp.data })
+      // localStorage.setItem('user', JSON.stringify(userResp.data))
       navigate('/')
     } catch (error) {
       toast({
