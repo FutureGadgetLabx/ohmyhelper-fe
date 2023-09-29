@@ -15,4 +15,4 @@ spec:
     spec:
       containers:
         - name: ohmyhelper-fe
-          image: ccr.ccs.tencentyun.com/ohmyhelper/ohmyhelper-web:{{IMAME_TAG}}
+          image: ccr.ccs.tencentyun.com/ohmyhelper/ohmyhelper-web:v0.1
