@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ohmyhelper-fe
+  namespace: ohmyhelper
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ohmyhelper-fe
+  template:
+    metadata:
+      labels:
+        app: ohmyhelper-fe
+    spec:
+      containers:
+        - name: ohmyhelper-fe
+          image: ccr.ccs.tencentyun.com/ohmyhelper/ohmyhelper-web:{{IMAME_TAG}}
