@@ -9,14 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import useStore from '@/store/UseStore.ts'
 import { useNavigate } from 'react-router-dom'
+import { User } from '@/types/types.ts'
 
-export function UserNav() {
-  const {
-    appStore: { user },
-  } = useStore()
-
+export function UserNav(user: User) {
   const navigate = useNavigate()
 
   function handleLogout() {

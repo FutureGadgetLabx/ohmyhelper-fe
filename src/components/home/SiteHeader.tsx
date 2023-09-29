@@ -3,12 +3,11 @@ import { ArrowRightIcon, BellIcon, StarIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button.tsx'
 import { Link } from 'react-router-dom'
 import { UserNav } from '@/components/home/UserNav.tsx'
-import useStores from '@/store/UseStore.ts'
+import { useRecoilValue } from 'recoil'
+import { userState } from '@/recoil/atom.ts'
 
 export function SiteHeader() {
-  const {
-    appStore: { user },
-  } = useStores()
+  const user = useRecoilValue(userState)
 
   return (
     <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
@@ -27,7 +26,7 @@ export function SiteHeader() {
             </Button>
           </div>
           {user ? (
-            <UserNav />
+            <UserNav {...user} />
           ) : (
             <Link
               to="/login"

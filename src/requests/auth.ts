@@ -1,15 +1,37 @@
-import {
-  LoginReq,
-  LoginResp,
-  RegisterReq,
-  RegisterResp,
-  SendCodeReq,
-  SendCodeResp,
-} from '@/request/model/Auth.ts'
 import axios, { AxiosResponse } from 'axios'
-import { getBaseURL } from '@/request/Base.ts'
+import { getBaseURL } from '@/requests/base.ts'
 
 const baseURL = getBaseURL()
+
+export interface LoginReq {
+  email: string
+  passwd: string
+}
+
+export interface LoginResp {
+  userID?: string
+}
+
+export interface RegisterReq {
+  email?: string
+  passwd?: string
+  code?: string
+}
+
+export interface RegisterResp {
+  token?: string
+  refreshToken?: string
+}
+
+export interface SendCodeReq {
+  email?: string
+  action?: string
+}
+
+export interface SendCodeResp {
+  status?: string
+}
+
 export const sendCode = (req: SendCodeReq) =>
   axios.post<SendCodeReq, AxiosResponse<SendCodeResp>>('/auth/code', req, {
     baseURL: baseURL,

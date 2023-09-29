@@ -2,12 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import '@/assets/globals.css'
-import RootStore from '@/store'
+import { RecoilRoot } from 'recoil'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RootStore>
+    <RecoilRoot>
       <App />
-    </RootStore>
+    </RecoilRoot>
   </React.StrictMode>
 )
