@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ohmyhelper-fe
+  namespace: ohmyhelper
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ohmyhelper-fe
+  template:
+    metadata:
+      labels:
+        app: ohmyhelper-fe
+    spec:
+      containers:
+        - name: ohmyhelper-fe
+          image: swr.cn-south-1.myhuaweicloud.com/cruii/ohmyhelper-fe:{{version}}
+      imagePullSecrets:
+        - name: default-secret
