@@ -2,31 +2,8 @@ import { SiteHeader } from '@/components/home/SiteHeader.tsx'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx'
 import { RocketIcon } from '@radix-ui/react-icons'
 import { Outlet } from 'react-router-dom'
-import { useEffect } from 'react'
-import { getUser } from '@/requests/user.ts'
-import useStores from '@/store/UseStore.ts'
 
 export const Home = () => {
-  const {
-    appStore,
-    appStore: { user },
-  } = useStores()
-
-  useEffect(() => {
-    ;(async () => {
-      const u = localStorage.getItem('user')
-      if (u) {
-        const localUser = JSON.parse(u)
-        if (!user && localUser) {
-          const resp = await getUser({
-            userID: localUser.userID,
-          })
-          appStore.setUser({ ...resp.data })
-          console.log(resp.data)
-        }
-      }
-    })()
-  }, [])
   return (
     <div className="flex flex-col h-full">
       <SiteHeader />

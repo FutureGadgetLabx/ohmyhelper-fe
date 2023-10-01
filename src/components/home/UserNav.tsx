@@ -26,10 +26,10 @@ export function UserNav(user: User) {
           <Avatar className="h-8 w-8">
             <AvatarImage
               src="https://ui.shadcn.com/avatars/02.png"
-              alt={user?.nickname}
+              alt={user.nickname}
             />
             <AvatarFallback>
-              {user?.userID.substring(0, 2).toUpperCase()}
+              {user.userID.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -37,9 +37,9 @@ export function UserNav(user: User) {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user?.nickname}</p>
+            <p className="text-sm font-medium leading-none">{user.nickname}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              {user?.email}
+              {user.email}
             </p>
           </div>
         </DropdownMenuLabel>
