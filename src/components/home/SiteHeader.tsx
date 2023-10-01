@@ -3,12 +3,23 @@ import { ArrowRightIcon, BellIcon, StarIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button.tsx'
 import { Link } from 'react-router-dom'
 import { UserNav } from '@/components/home/UserNav.tsx'
-import { useRecoilValue } from 'recoil'
 import { userState } from '@/recoil/atom.ts'
+import { useEffect } from 'react'
+import { getUser } from '@/requests/user.ts'
+import { useRecoilState } from 'recoil'
 
 export function SiteHeader() {
-  const user = useRecoilValue(userState)
+  const [user, setUser] = useRecoilState(userState)
 
+  useEffect(() => {
+    const localUser = localStorage.getItem('user')
+    if (localUser) {
+      const user = JSON.parse(localUser)
+      getUser({ userID: user.userID }).then(res => {
+        setUser({ ...res.data })
+      })
+    }
+  }, [])
   return (
     <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="container flex h-14 items-center">

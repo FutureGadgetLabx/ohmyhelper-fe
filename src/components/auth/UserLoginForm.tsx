@@ -21,6 +21,7 @@ import { getUser } from '@/requests/user.ts'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { userState } from '@/recoil/atom.ts'
+import { GitHubLogoIcon, PersonIcon } from '@radix-ui/react-icons'
 
 const loginFormSchema = z.object({
   email: z
@@ -58,7 +59,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       const resp = await login({ email: data.email, passwd: data.passwd })
       const userResp = await getUser({ userID: resp.data.userID })
       setUser({ ...userResp.data })
-      // localStorage.setItem('user', JSON.stringify(userResp.data))
+      localStorage.setItem('user', JSON.stringify(userResp.data))
       navigate('/')
     } catch (error) {
       toast({
@@ -138,6 +139,11 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
               立即登录
             </Button>
           </div>
+          <div className="flex justify-end pt-1">
+            <span className="underline underline-offset-2 text-sm text-muted-foreground hover:cursor-pointer">
+              找回密码
+            </span>
+          </div>
         </form>
       </Form>
       <div className="relative">
@@ -156,15 +162,14 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
           variant="outline"
           type="button"
           disabled={isLoading}
+          onClick={() => navigate('/')}
         >
-          {<Icons.gitHub className="mr-2 h-4 w-4" />} Github
+          {<PersonIcon className="mr-2 h-4 w-4" />} 游客访问
         </Button>
-        <Button
-          className="w-32"
-          variant="outline"
-          type="button"
-          disabled={isLoading}
-        >
+        <Button className="w-32" variant="outline" type="button" disabled>
+          {<GitHubLogoIcon className="mr-2 h-4 w-4" />} Github
+        </Button>
+        <Button className="w-32" variant="outline" type="button" disabled>
           {<Icons.qq className="mr-2 h-5 w-5" />} QQ
         </Button>
       </div>

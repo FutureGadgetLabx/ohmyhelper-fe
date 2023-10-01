@@ -46,3 +46,8 @@ export const login = (req: LoginReq) =>
   axios.post<LoginReq, AxiosResponse<LoginResp>>('/auth/login', req, {
     baseURL: baseURL,
   })
+
+export const logout = () =>
+  axios.post('/auth/logout', null, {
+    baseURL: baseURL,
+  })

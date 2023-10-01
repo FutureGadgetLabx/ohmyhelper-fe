@@ -11,11 +11,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useNavigate } from 'react-router-dom'
 import { User } from '@/types/types.ts'
+import { logout } from '@/requests/auth.ts'
 
 export function UserNav(user: User) {
   const navigate = useNavigate()
 
-  function handleLogout() {
+  async function handleLogout() {
+    localStorage.removeItem('user')
+    await logout()
     navigate('/login')
   }
 
