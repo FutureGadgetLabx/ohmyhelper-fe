@@ -5,7 +5,6 @@ module.exports = {
   'trailingComma': 'es5',
   'printWidth': 80,
   'arrowParens': 'avoid',
-  'endOfLine': 'lf',
   'jsxBracketSameLine': false,
   'jsxSingleQuote': false,
   'proseWrap': 'preserve',

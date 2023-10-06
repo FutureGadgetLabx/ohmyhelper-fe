@@ -12,11 +12,15 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { User } from '@/types/types.ts'
 import { logout } from '@/requests/auth.ts'
+import { useResetRecoilState } from 'recoil'
+import { userState } from '@/recoil/atom.ts'
 
 export function UserNav(user: User) {
   const navigate = useNavigate()
+  const resetUser = useResetRecoilState(userState)
 
   async function handleLogout() {
+    resetUser()
     localStorage.removeItem('user')
     await logout()
     navigate('/login')

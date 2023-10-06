@@ -36,7 +36,7 @@ export function SiteHeader() {
               </span>
             </Button>
           </div>
-          {user.userID ? (
+          {user?.userID ? (
             <UserNav {...user} />
           ) : (
             <Link
