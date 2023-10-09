@@ -22,10 +22,13 @@ export const AuthorHoverCard = (props: AuthorProps) => {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <Avatar className="h-6 w-6 cursor-pointer">
-          <AvatarImage src={props.avatar} />
-          <AvatarFallback>{props.avatarFallback}</AvatarFallback>
-        </Avatar>
+        <div className="flex hover:cursor-pointer">
+          <Avatar className="h-6 w-6">
+            <AvatarImage src={props.avatar} />
+            <AvatarFallback>{props.avatarFallback}</AvatarFallback>
+          </Avatar>
+          <span className="pl-1 font-bold">cruii</span>
+        </div>
       </HoverCardTrigger>
       <HoverCardContent className="w-80">
         <div className="flex justify-between space-x-4">

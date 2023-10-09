@@ -22,7 +22,7 @@ interface AppCardProps {
 
 export const AppCard = (props: AppCardProps) => {
   const date = new Date(props.updateTime)
-  const displayFormat = 'YYYY-MM-DD HH:mm'
+  const displayFormat = 'YYYY-MM-DD'
 
   return (
     <Card>
