@@ -4,7 +4,7 @@ metadata:
   name: ohmyhelper-fe
   namespace: ohmyhelper
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: ohmyhelper-fe
