@@ -18,3 +18,6 @@ steps:
   - echo ${DRONE_TAG}
   - echo ${DRONE_SOURCE_BRANCH}
   - echo ${DRONE_TARGET_BRANCH}
+  - echo ${DRONE_STAGE_STATUS}
+  - echo ${DRONE_STAGE_FINISHED}
+  - echo ${DRONE_BUILD_FINISHED}
