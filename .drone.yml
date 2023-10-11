@@ -10,7 +10,7 @@ steps:
   - echo world
   - echo '构建分支${DRONE_BRANCH}'
   - echo ${DRONE_COMMIT}
-  - echo 'Commit message ${DRONE_COMMIT_MESSAGE}'
+  - echo "Commit message ${DRONE_COMMIT_MESSAGE}"
   - echo ${DRONE_REPO_BRANCH}
   - echo ${DRONE_REPO}
   - echo ${DRONE_REPO_LINK}
