@@ -23,6 +23,6 @@ steps:
   - echo ${DRONE_BUILD_FINISHED}
 - name: test_build
   image: alpine
-  command:
+  commands:
   - echo ${DRONE_STAGE_FINISHED}
   - echo ${DRONE_BUILD_FINISHED}
