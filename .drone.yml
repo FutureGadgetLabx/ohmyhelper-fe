@@ -24,5 +24,6 @@ steps:
 - name: test_build
   image: alpine
   commands:
+  - sleep 2
   - echo ${DRONE_STAGE_FINISHED}
   - echo ${DRONE_BUILD_FINISHED}
