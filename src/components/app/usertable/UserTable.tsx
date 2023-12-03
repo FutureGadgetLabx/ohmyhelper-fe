@@ -1,6 +1,9 @@
 import { DataTable } from './data-table.tsx'
 import { Task } from '@/components/app/usertable/data/schema.ts'
 import { columns } from '@/components/app/usertable/columns.tsx'
+import { AppConfigDrawer } from '@/components/app/drawer/AppConfigDrawer.tsx'
+
+import { useAppContext } from '@/components/app/UseAppContext.tsx'
 
 const tasks: Task[] = [
   {
@@ -350,19 +353,21 @@ const tasks: Task[] = [
   },
 ]
 export default function UserTable() {
+  const app = useAppContext()
   return (
-    <>
-      <div className="hidden h-full flex-1 flex-col space-y-8 py-8 md:flex">
-        <div className="flex items-center justify-between space-y-2">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight">用户列表</h2>
-            <p className="text-muted-foreground">
-              这是所有使用过该应用的用户以及他们的执行状态
-            </p>
-          </div>
+    <div className="hidden h-full flex-1 flex-col space-y-8 py-8 md:flex">
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">用户列表</h2>
+          <p className="text-muted-foreground">
+            这是所有使用过该应用的用户以及他们的执行状态
+          </p>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        <div className="flex justify-end">
+          <AppConfigDrawer {...app} />
+        </div>
       </div>
-    </>
+      <DataTable data={tasks} columns={columns} />
+    </div>
   )
 }

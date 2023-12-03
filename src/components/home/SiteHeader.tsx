@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import { UserNav } from '@/components/home/UserNav.tsx'
 import { userState } from '@/recoil/atom.ts'
 import { useEffect } from 'react'
-import { getUser } from '@/requests/user.ts'
 import { useRecoilState } from 'recoil'
 
 export function SiteHeader() {
@@ -15,9 +14,11 @@ export function SiteHeader() {
     const localUser = localStorage.getItem('user')
     if (localUser) {
       const user = JSON.parse(localUser)
-      getUser({ userID: user.userID }).then(res => {
-        setUser({ ...res.data })
-      })
+      console.log(user)
+      setUser({ ...user })
+      // getUser({ userId: user.userId }).then(res => {
+      //   setUser({ ...res.data })
+      // })
     }
   }, [])
   return (
@@ -36,7 +37,7 @@ export function SiteHeader() {
               </span>
             </Button>
           </div>
-          {user?.userID ? (
+          {user?.userId ? (
             <UserNav {...user} />
           ) : (
             <Link

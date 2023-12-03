@@ -11,53 +11,60 @@ import {
   PersonIcon,
 } from '@radix-ui/react-icons'
 import dayjs from 'dayjs'
+import { useAppContext } from '@/components/app/UseAppContext.tsx'
 
-interface HeadDetailsProps {
-  id?: string
-}
-
-export const HeadDetails = (props: HeadDetailsProps) => {
-  console.log(props.id)
-  const date = new Date()
+export const AppDetailHead = () => {
+  const app = useAppContext()
   const displayFormat = 'MM YYYY'
   return (
     <>
       <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
-        哔哩哔哩日常任务
+        {app?.name}
       </h1>
       <blockquote className="mt-6 border-l-2 pl-6 italic">
-        每日自动完成哔哩哔哩日常任务，如观看视频，分享视频，投币等。
+        {app?.description}
       </blockquote>
       <div className="pt-4 flex gap-4">
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <div className="flex justify-center items-center">
             <PersonIcon className="h-4 w-4 text-muted-foreground mx-1" />
-            <span className="font-bold text-muted-foreground">作者</span>
+            <span className="font-bold text-xs text-muted-foreground">
+              作者
+            </span>
           </div>
           <div className="underline cursor-pointer underline-offset-4">
             <HoverCard>
               <HoverCardTrigger asChild>
                 <div className="flex">
                   <Avatar className="h-6 w-6 cursor-pointer">
-                    <AvatarImage src="https://ui.shadcn.com/avatars/02.png" />
-                    <AvatarFallback>CR</AvatarFallback>
+                    <AvatarImage src={app?.author?.avatarUrl} />
+                    <AvatarFallback>
+                      {app?.author?.nickname.substring(0, 2)}
+                    </AvatarFallback>
                   </Avatar>
-                  <span className="ml-1">cruii</span>
+                  <span className="ml-1">{app?.author?.nickname}</span>
                 </div>
               </HoverCardTrigger>
               <HoverCardContent className="w-80">
                 <div className="flex justify-between space-x-4">
                   <Avatar>
-                    <AvatarImage src="https://ui.shadcn.com/avatars/02.png" />
-                    <AvatarFallback>CR</AvatarFallback>
+                    <AvatarImage src={app?.author?.avatarUrl} />
+                    <AvatarFallback>
+                      {app?.author?.nickname.substring(0, 2)}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="space-y-1 w-56">
-                    <h4 className="text-sm font-semibold">cruii</h4>
-                    <p className="text-sm line-clamp-2">oh my helper founder</p>
+                    <h4 className="text-sm font-semibold">
+                      {app?.author?.nickname}
+                    </h4>
+                    <p className="text-sm line-clamp-2">
+                      {app?.author?.profile}
+                    </p>
                     <div className="flex items-center pt-2">
                       <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />{' '}
                       <span className="text-xs text-muted-foreground">
-                        Joined {dayjs(date).format(displayFormat)}
+                        Joined{' '}
+                        {dayjs(app?.author?.createdAt).format(displayFormat)}
                       </span>
                     </div>
                   </div>
@@ -66,39 +73,47 @@ export const HeadDetails = (props: HeadDetailsProps) => {
             </HoverCard>
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <div className="flex justify-center items-center">
             <ArchiveIcon className="h-4 w-4 text-muted-foreground mx-1" />
-            <span className="font-bold text-muted-foreground">当前版本</span>
+            <span className="font-bold text-xs text-muted-foreground">
+              最新版本
+            </span>
           </div>
-          <span className="ml-1">v1.0.1</span>
+          <span className="ml-1 text-sm">{app?.versions?.[0]}</span>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <div className="flex justify-center items-center">
             <GitHubLogoIcon className="h-4 w-4 text-muted-foreground mx-1" />
-            <span className="font-bold text-muted-foreground">开源地址</span>
+            <span className="font-bold text-xs text-muted-foreground">
+              开源地址
+            </span>
           </div>
-          <span className="ml-1 underline cursor-pointer">
+          <span className="ml-1 text-sm underline cursor-pointer">
             https://github.com/ohmyhelper/ohmyhelper-bilibili
           </span>
         </div>
       </div>
-      <div className="pt-4 flex gap-4">
+      <div className="pt-4 flex gap-4 items-center">
         <div className="flex justify-center items-center">
           <CalendarIcon className="h-4 w-4 text-muted-foreground mx-1" />
-          <span className="font-bold text-muted-foreground">创建时间</span>
+          <span className="font-bold text-xs text-muted-foreground">
+            发布时间
+          </span>
         </div>
-        <span className="ml-1">
-          {dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')}
+        <span className="ml-1 text-sm">
+          {dayjs(app?.createdAt).format('YYYY-MM-DD HH:mm:ss')}
         </span>
       </div>
-      <div className="pt-4 flex gap-4">
+      <div className="pt-4 flex gap-4 items-center">
         <div className="flex justify-center items-center">
           <CalendarIcon className="h-4 w-4 text-muted-foreground mx-1" />
-          <span className="font-bold text-muted-foreground">更新时间</span>
+          <span className="font-bold text-xs text-muted-foreground">
+            更新时间
+          </span>
         </div>
-        <span className="ml-1">
-          {dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')}
+        <span className="ml-1 text-sm">
+          {dayjs(app?.updatedAt).format('YYYY-MM-DD HH:mm:ss')}
         </span>
       </div>
     </>

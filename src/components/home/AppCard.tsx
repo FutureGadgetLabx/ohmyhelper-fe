@@ -1,5 +1,7 @@
 import { CalendarIcon, StarIcon } from '@radix-ui/react-icons'
 import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -9,36 +11,32 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Icons } from '@/components/icons.tsx'
-import { AuthorHoverCard, AuthorProps } from '@/components/home/HoverCard.tsx'
+import { AuthorHoverCard } from '@/components/home/HoverCard.tsx'
 import { Link } from 'react-router-dom'
+import { App } from '@/requests/app.ts'
 
-interface AppCardProps {
-  id: number
-  name: string
-  description: string
-  updateTime: number
-  author: AuthorProps
-}
-
-export const AppCard = (props: AppCardProps) => {
-  const date = new Date(props.updateTime)
-  const displayFormat = 'YYYY-MM-DD HH:mm'
+dayjs.locale('zh-cn')
+dayjs.extend(relativeTime)
+export const AppCard = (app: App) => {
+  const date = new Date(app.updatedAt)
+  // const displayFormat = 'YYYY-MM-DD HH:mm'
 
   return (
     <Card>
       <CardHeader className="grid grid-cols-[1fr_80px] items-start gap-4 space-y-0">
         <div className="space-y-1">
-          <Link to={`/apps/${props.id}`}>
+          <Link to={`/apps/${app.appId}`}>
             <CardTitle className="hover:underline cursor-pointer">
-              {props.name}
+              {app.name}
             </CardTitle>
           </Link>
-          <CardDescription className="h-[60px] line-clamp-3">
-            {props.description}
+          <CardDescription className="overflow-hidden line-clamp-3">
+            {app.description}+{app.description}+{app.description}+
+            {app.description}+{app.description}+{app.description}+
           </CardDescription>
         </div>
         <div>
-          <Button variant="secondary" className="shadow-none">
+          <Button variant="outline" className="shadow-none h-7">
             <StarIcon className="mr-2 h-4 w-4" />
             Star
           </Button>
@@ -71,22 +69,25 @@ export const AppCard = (props: AppCardProps) => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex space-x-6 text-sm text-muted-foreground">
+        <div className="flex xl:space-x-4 space-x-6 text-sm text-muted-foreground">
           <div className="flex items-center">
-            {/*<CircleIcon className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />*/}
-            <Icons.react className="mr-1 h-3 w-3" />
-            TypeScript
+            {Icons.language(app.language)}
+            <span className="ml-1">{app.language}</span>
           </div>
-          <div className="flex items-center">
-            <StarIcon className="mr-1 h-3 w-3" />
-            20k
+          <div className="flex items-center justify-center">
+            <StarIcon className="mr-1 h-4 w-4" />
+            <span>{app.stars}</span>
           </div>
-          <div className="flex items-center">
-            <CalendarIcon className="mr-1 h-3 w-3" />
-            {dayjs(date).format(displayFormat)}
+          <div className="flex items-center justify-center">
+            <CalendarIcon className="mr-1 h-4 w-4" />
+            {dayjs(date).fromNow()}
           </div>
           <div>
-            <AuthorHoverCard {...props.author} />
+            <AuthorHoverCard
+              author={app.author}
+              authorAvatarUrl={app.authorAvatarUrl}
+              createdAt={app.createdAt}
+            />
           </div>
         </div>
       </CardContent>

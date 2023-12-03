@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button.tsx'
 
 import { statuses } from './data/data.tsx'
 import { DataTableFacetedFilter } from './data-table-faceted-filter.tsx'
-import { TaskConfigDrawer } from '@/components/app/drawer/TaskConfigDrawer.tsx'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -13,7 +12,7 @@ interface DataTableToolbarProps<TData> {
 
 export function DataTableToolbar<TData>({
   table,
-}: DataTableToolbarProps<TData>) {
+}: Readonly<DataTableToolbarProps<TData>>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
   return (
@@ -45,7 +44,6 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <TaskConfigDrawer />
     </div>
   )
 }

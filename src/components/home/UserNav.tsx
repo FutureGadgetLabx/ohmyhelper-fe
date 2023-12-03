@@ -15,7 +15,7 @@ import { logout } from '@/requests/auth.ts'
 import { useResetRecoilState } from 'recoil'
 import { userState } from '@/recoil/atom.ts'
 
-export function UserNav(user: User) {
+export function UserNav(user: Readonly<User>) {
   const navigate = useNavigate()
   const resetUser = useResetRecoilState(userState)
 
@@ -36,7 +36,7 @@ export function UserNav(user: User) {
               alt={user.nickname}
             />
             <AvatarFallback>
-              {user.userID.substring(0, 2).toUpperCase()}
+              {user.nickname.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </Button>

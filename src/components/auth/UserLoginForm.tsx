@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/form.tsx'
 import { login } from '@/requests/auth.ts'
 import { toast } from '@/components/ui/use-toast.ts'
-import { getUser } from '@/requests/user.ts'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { userState } from '@/recoil/atom.ts'
@@ -57,9 +56,9 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
     setIsLoading(true)
     try {
       const resp = await login({ email: data.email, passwd: data.passwd })
-      const userResp = await getUser({ userID: resp.data.userID })
-      setUser({ ...userResp.data })
-      localStorage.setItem('user', JSON.stringify(userResp.data))
+      // const userResp = await getUser({ userID: resp.data.userId })
+      setUser({ ...resp.data })
+      localStorage.setItem('user', JSON.stringify(resp.data))
       navigate('/')
     } catch (error) {
       toast({

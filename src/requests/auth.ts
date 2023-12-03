@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { getBaseURL } from '@/requests/base.ts'
+import { User } from '@/types/types.ts'
 
 const baseURL = getBaseURL()
 
@@ -9,7 +10,7 @@ export interface LoginReq {
 }
 
 export interface LoginResp {
-  userID?: string
+  userId?: string
 }
 
 export interface RegisterReq {
@@ -43,7 +44,7 @@ export const register = (req: RegisterReq) =>
   })
 
 export const login = (req: LoginReq) =>
-  axios.post<LoginReq, AxiosResponse<LoginResp>>('/auth/login', req, {
+  axios.post<LoginReq, AxiosResponse<User>>('/auth/login', req, {
     baseURL: baseURL,
   })
 
