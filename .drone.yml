@@ -1,0 +1,29 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: greeting
+  image: alpine
+  commands:
+  - echo hello
+  - echo world
+  - echo '构建分支${DRONE_BRANCH}'
+  - echo ${DRONE_COMMIT}
+  - echo "Commit message ${DRONE_COMMIT_MESSAGE}"
+  - echo ${DRONE_REPO_BRANCH}
+  - echo ${DRONE_REPO}
+  - echo ${DRONE_REPO_LINK}
+  - echo ${DRONE_SEMVER}
+  - echo ${DRONE_TAG}
+  - echo ${DRONE_SOURCE_BRANCH}
+  - echo ${DRONE_TARGET_BRANCH}
+  - echo ${DRONE_STAGE_STATUS}
+  - echo ${DRONE_STAGE_FINISHED}
+  - echo ${DRONE_BUILD_FINISHED}
+- name: test_build
+  image: alpine
+  commands:
+  - sleep 2
+  - echo ${DRONE_STAGE_FINISHED}
+  - echo ${DRONE_BUILD_FINISHED}
