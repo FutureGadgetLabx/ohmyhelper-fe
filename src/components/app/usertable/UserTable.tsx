@@ -1,11 +1,11 @@
 import { DataTable } from './data-table.tsx'
-import { Task } from '@/components/app/usertable/data/schema.ts'
+import { Job } from '@/components/app/usertable/data/schema.ts'
 import { columns } from '@/components/app/usertable/columns.tsx'
 import { AppConfigDrawer } from '@/components/app/drawer/AppConfigDrawer.tsx'
 
 import { useAppContext } from '@/components/app/UseAppContext.tsx'
 
-const tasks: Task[] = [
+const jobs: Job[] = [
   {
     id: 'TASK-8782',
     user: {
@@ -367,7 +367,7 @@ export default function UserTable() {
           <AppConfigDrawer {...app} />
         </div>
       </div>
-      <DataTable data={tasks} columns={columns} />
+      <DataTable data={jobs} columns={columns} />
     </div>
   )
 }

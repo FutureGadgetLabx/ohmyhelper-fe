@@ -4,22 +4,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import { statuses } from './data/data.tsx'
 import { DataTableColumnHeader } from './data-table-column-header.tsx'
 
-import { Task, User } from '@/components/app/usertable/data/schema.ts'
+import { Job, User } from '@/components/app/usertable/data/schema.ts'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx'
 import { CalendarIcon, RocketIcon } from '@radix-ui/react-icons'
 import dayjs from 'dayjs'
 import { Badge } from '@/components/ui/badge.tsx'
 
-export const columns: ColumnDef<Task>[] = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="任务ID" />
-    ),
-    cell: ({ row }) => <div className="w-[100px]">{row.getValue('id')}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  },
+export const columns: ColumnDef<Job>[] = [
   {
     accessorKey: 'user',
     header: ({ column }) => (
@@ -36,12 +27,12 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       )
     },
-    enableSorting: false,
+    enableSorting: true,
   },
   {
     accessorKey: 'extendProps',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="详细信息" />
+      <DataTableColumnHeader column={column} title="任务信息" />
     ),
     cell: ({ row }) => {
       const extendProps = row.getValue('extendProps') as {

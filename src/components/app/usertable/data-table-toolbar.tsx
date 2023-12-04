@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button.tsx'
 
 import { statuses } from './data/data.tsx'
 import { DataTableFacetedFilter } from './data-table-faceted-filter.tsx'
+import { DataTableViewOptions } from '@/components/app/usertable/data-table-view-options.tsx'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -44,6 +45,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
+      <DataTableViewOptions table={table} />
     </div>
   )
 }

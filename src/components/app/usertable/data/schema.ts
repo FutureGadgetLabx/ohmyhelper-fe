@@ -4,7 +4,7 @@ export type User = {
   username: string
 }
 
-export type Task = {
+export type Job = {
   id: string
   user: User
   status: string
