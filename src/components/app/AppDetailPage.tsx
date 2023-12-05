@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom'
 import { AppDetailHead } from '@/components/app/AppDetailHead.tsx'
-import UserTable from '@/components/app/usertable/UserTable.tsx'
 import { createContext, useEffect, useState } from 'react'
 import { AppDetail, getApp } from '@/requests/app.ts'
+import UserTable from "@/components/app/UserTable.tsx";
 
 export const AppContext = createContext<AppDetail | undefined>(undefined)
 export const AppDetailPage = () => {

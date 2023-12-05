@@ -28,6 +28,7 @@ export const columns: ColumnDef<Job>[] = [
       )
     },
     enableSorting: true,
+    accessorFn: row => row.user.username,
   },
   {
     accessorKey: 'extendProps',
