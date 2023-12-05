@@ -25,6 +25,7 @@ import { ChevronDownIcon } from './ChevronDownIcon'
 import { SearchIcon } from './SearchIcon'
 import { columns, users, statusOptions } from './data'
 import { capitalize } from './utils'
+import { AppConfigDrawer } from '@/components/app/drawer/AppConfigDrawer.tsx'
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
@@ -80,7 +81,7 @@ export default function UserTable() {
     }
 
     return filteredUsers
-  }, [users, filterValue, statusFilter])
+  }, [hasSearchFilter, statusFilter, filterValue])
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage
@@ -248,13 +249,15 @@ export default function UserTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="bg-foreground text-background"
-              endContent={<PlusIcon width={undefined} height={undefined} />}
-              size="sm"
-            >
-              Add New
-            </Button>
+            <AppConfigDrawer>
+              <Button
+                className="bg-foreground text-background"
+                endContent={<PlusIcon width={undefined} height={undefined} />}
+                size="sm"
+              >
+                Add New
+              </Button>
+            </AppConfigDrawer>
           </div>
         </div>
         <div className="flex justify-between items-center">
