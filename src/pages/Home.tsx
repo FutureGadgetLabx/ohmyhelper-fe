@@ -3,7 +3,6 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx'
 import { RocketIcon } from '@radix-ui/react-icons'
 import { Outlet } from 'react-router-dom'
 import { Button } from '@/components/ui/button.tsx'
-import { Input } from '@/components/ui/input.tsx'
 import {
   Form,
   FormControl,
@@ -16,6 +15,7 @@ import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Textarea } from '@/components/ui/textarea.tsx'
+import {Input} from "@nextui-org/react";
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -53,7 +53,7 @@ export const Home = () => {
             </AlertDescription>
           </Alert>
         </div>
-        <div className="container">
+        <div className="container p-8">
           <Outlet />
         </div>
       </div>

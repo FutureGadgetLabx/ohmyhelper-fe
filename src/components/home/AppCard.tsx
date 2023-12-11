@@ -25,7 +25,7 @@ export const AppCard = (app: App) => {
     <Card>
       <CardHeader className="grid grid-cols-[1fr_80px] items-start gap-4 space-y-0">
         <div className="space-y-1">
-          <Link to={`/apps/${app.appId}`}>
+          <Link to={`/apps/${app.appId}/overview`}>
             <CardTitle className="hover:underline cursor-pointer">
               {app.name}
             </CardTitle>

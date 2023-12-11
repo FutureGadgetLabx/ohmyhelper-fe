@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils.ts'
 import { Icons } from '@/components/icons.tsx'
 import { Button } from '@/components/ui/button.tsx'
-import { Input } from '@/components/ui/input.tsx'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -21,6 +20,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { userState } from '@/recoil/atom.ts'
 import { GitHubLogoIcon, PersonIcon } from '@radix-ui/react-icons'
+import {Input} from "@nextui-org/react";
 
 const loginFormSchema = z.object({
   email: z

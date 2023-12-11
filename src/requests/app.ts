@@ -36,15 +36,15 @@ export interface Author {
 }
 
 export interface AppDetail {
-  appId?: string
+  appId: string
   name?: string
   author?: Author
   description?: string
   language?: string
   stars?: number
   image?: string
-  versions?: string[]
-  params?: string
+  versions: string[]
+  params: string
   createdAt?: Date
   updatedAt?: Date
 }

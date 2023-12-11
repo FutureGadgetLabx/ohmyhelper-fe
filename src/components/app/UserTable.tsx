@@ -1,31 +1,30 @@
 import React from 'react'
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Chip,
-  User,
+  ChipProps, Code,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
   Pagination,
   Selection,
-  ChipProps,
   SortDescriptor,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  User,
 } from '@nextui-org/react'
-import { PlusIcon } from './PlusIcon'
 import { VerticalDotsIcon } from './VerticalDotsIcon'
 import { ChevronDownIcon } from './ChevronDownIcon'
 import { SearchIcon } from './SearchIcon'
-import { columns, users, statusOptions } from './data'
+import { columns, statusOptions, users } from './data'
 import { capitalize } from './utils'
-import { AppConfigDrawer } from '@/components/app/drawer/AppConfigDrawer.tsx'
+import dayjs from "dayjs";
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
@@ -33,18 +32,25 @@ const statusColorMap: Record<string, ChipProps['color']> = {
   vacation: 'warning',
 }
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions']
+const INITIAL_VISIBLE_COLUMNS = [
+  'user',
+  'cron',
+  'status',
+  'createdAt',
+  'lastRunTime',
+  'actions',
+]
 
 type User = (typeof users)[0]
 
 export default function UserTable() {
   const [filterValue, setFilterValue] = React.useState('')
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
+  // const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS)
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(1)
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
@@ -68,7 +74,7 @@ export default function UserTable() {
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter(user =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+        user.userId.toLowerCase().includes(filterValue.toLowerCase())
       )
     }
     if (
@@ -104,37 +110,28 @@ export default function UserTable() {
     const cellValue = user[columnKey as keyof User]
 
     switch (columnKey) {
-      case 'name':
+      case 'user':
         return (
           <User
             avatarProps={{ radius: 'full', size: 'sm', src: user.avatar }}
             classNames={{
               description: 'text-default-500',
             }}
-            description={user.email}
+            description={'@'+user.userId}
             name={cellValue}
           >
-            {user.email}
+            {user.userId}
           </User>
-        )
-      case 'role':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-500">
-              {user.team}
-            </p>
-          </div>
         )
       case 'status':
         return (
           <Chip
             className="capitalize border-none gap-1 text-default-600"
             color={statusColorMap[user.status]}
-            size="sm"
+            size="md"
             variant="dot"
           >
-            {cellValue}
+            {statusOptions.find(status => status.uid === user.status)?.name}
           </Chip>
         )
       case 'actions':
@@ -158,6 +155,10 @@ export default function UserTable() {
             </Dropdown>
           </div>
         )
+      case 'lastRunTime':
+        return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss')
+      case 'cron':
+        return <Code>{cellValue}</Code>
       default:
         return cellValue
     }
@@ -206,7 +207,7 @@ export default function UserTable() {
                   size="sm"
                   variant="flat"
                 >
-                  Status
+                  状态
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -219,7 +220,8 @@ export default function UserTable() {
               >
                 {statusOptions.map(status => (
                   <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
+                    {/*{capitalize(status.name)}*/}
+                    {status.name}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
@@ -231,7 +233,7 @@ export default function UserTable() {
                   size="sm"
                   variant="flat"
                 >
-                  Columns
+                  列
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -249,15 +251,6 @@ export default function UserTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <AppConfigDrawer>
-              <Button
-                className="bg-foreground text-background"
-                endContent={<PlusIcon width={undefined} height={undefined} />}
-                size="sm"
-              >
-                Add New
-              </Button>
-            </AppConfigDrawer>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -265,11 +258,12 @@ export default function UserTable() {
             Total {users.length} users
           </span>
           <label className="flex items-center text-default-400 text-small">
-            Rows per page:
+            每页显示:
             <select
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
             >
+              <option value="1">1</option>
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="15">15</option>
@@ -290,7 +284,7 @@ export default function UserTable() {
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-between items-center">
+      <div className="py-2 px-2 flex justify-end items-center">
         <Pagination
           showControls
           classNames={{
@@ -303,14 +297,15 @@ export default function UserTable() {
           variant="light"
           onChange={setPage}
         />
-        <span className="text-small text-default-400">
-          {selectedKeys === 'all'
-            ? 'All items selected'
-            : `${selectedKeys.size} of ${items.length} selected`}
-        </span>
+        {/*<span className="text-small text-default-400">*/}
+        {/*  {selectedKeys === 'all'*/}
+        {/*    ? 'All items selected'*/}
+        {/*    : `${selectedKeys.size} of ${items.length} selected`}*/}
+        {/*</span>*/}
       </div>
     )
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter])
+  // }, [selectedKeys, items.length, page, pages, hasSearchFilter])
+  }, [items.length, page, pages, hasSearchFilter])
 
   const classNames = React.useMemo(
     () => ({
@@ -338,18 +333,18 @@ export default function UserTable() {
       aria-label="Example table with custom cells, pagination and sorting"
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
-      checkboxesProps={{
-        classNames: {
-          wrapper: 'after:bg-foreground after:text-background text-background',
-        },
-      }}
+      // checkboxesProps={{
+      //   classNames: {
+      //     wrapper: 'after:bg-foreground after:text-background text-background',
+      //   },
+      // }}
       classNames={classNames}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
+      // selectedKeys={selectedKeys}
+      // selectionMode="multiple"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
+      // onSelectionChange={setSelectedKeys}
       onSortChange={setSortDescriptor}
     >
       <TableHeader columns={headerColumns}>

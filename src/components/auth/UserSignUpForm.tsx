@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils.ts'
 import { Icons } from '@/components/icons.tsx'
 import { Button } from '@/components/ui/button.tsx'
-import { Input } from '@/components/ui/input.tsx'
 import { Link, useNavigate } from 'react-router-dom'
 import { useToast } from '@/components/ui/use-toast.ts'
 import { register, sendCode } from '@/requests/auth.ts'
@@ -17,6 +16,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form.tsx'
+import {Input} from "@nextui-org/react";
 
 const signupFormSchema = z.object({
   email: z
