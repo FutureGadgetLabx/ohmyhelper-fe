@@ -1,5 +1,11 @@
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
-import { Cross2Icon, PlusIcon, RocketIcon } from '@radix-ui/react-icons'
+import {
+  ArchiveIcon,
+  CalendarIcon,
+  Cross2Icon,
+  PlusIcon,
+  RocketIcon,
+} from '@radix-ui/react-icons'
 import { useRecoilState } from 'recoil'
 import { AppDetail } from '@/requests/app.ts'
 import { appDetailRecoilState } from '@/recoil/atom.ts'
@@ -86,6 +92,7 @@ export default function Settings() {
           defaultValue={jobConfig.version || appDetail.versions[0]} // 使用默认值
           render={({ field: { onChange, value } }) => (
             <Select
+              startContent={<ArchiveIcon />}
               isRequired
               value={value}
               onChange={e => onChange(e.target.value)}
@@ -114,6 +121,7 @@ export default function Settings() {
           defaultValue={jobConfig.cron || ''}
           render={({ field }) => (
             <Input
+              startContent={<CalendarIcon />}
               isRequired
               label="任务定时"
               variant="bordered"
